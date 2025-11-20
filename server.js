@@ -208,4 +208,61 @@ app.get('/export-pdf', (req, res) => {
 // -----------------------------------
 // START SERVER
 // -----------------------------------
+
+// -----------------------------------
+// POWER OF 2 UI
+// -----------------------------------
+app.get("/power", (req, res) => {
+    const html = `
+<!DOCTYPE html>
+<html>
+<head>
+<title>Power of 2 Calculator</title>
+<style>
+body { font-family: Arial; background:#f0f2f5; display:flex; justify-content:center; padding-top:60px; }
+.card { background:white; padding:30px; width:400px; border-radius:14px; box-shadow:0 4px 15px rgba(0,0,0,0.15);}
+h1 { text-align:center; color:#333;}
+form { display:flex; flex-direction:column; gap:15px;}
+input { padding:12px; border:1px solid #bbb; border-radius:6px; font-size:16px;}
+button { padding:12px; background:#007bff; border:none; color:white; border-radius:6px; font-size:16px; cursor:pointer;}
+button:hover { background:#005fcc; }
+#result { margin-top:15px; font-size:16px; font-weight:bold; color:#0066ff; text-align:center;}
+a { display:inline-block; margin-top:15px; text-align:center; color:#333; text-decoration:none;}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>Power of 2 Calculator</h1>
+<form id="powerForm">
+<input type="number" id="number" placeholder="Enter a number" required>
+<button type="submit">Calculate 2^n</button>
+</form>
+<div id="result"></div>
+<a href="/">← Back to User Management</a>
+
+<script>
+document.getElementById('powerForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const num = document.getElementById('number').value;
+    const response = await fetch('/api/power/' + num);
+    if(response.ok){
+        const data = await response.json();
+        document.getElementById('result').innerText = \`2^\${data.input} = \${data.result}\`;
+    } else {
+        document.getElementById('result').innerText = 'Invalid input!';
+    }
+});
+</script>
+</div>
+</body>
+</html>
+`;
+    res.send(html);
+});
+
+
+
+
+
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
